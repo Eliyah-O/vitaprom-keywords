@@ -62,6 +62,8 @@ p{margin:0;}
 .h-sec{font-size:clamp(24px,4.4vw,34px); font-weight:750; letter-spacing:-.022em; line-height:1.12;}
 .lede{color:var(--ink-2); max-width:62ch; font-size:clamp(15px,1.7vw,17px); margin-top:14px;}
 .note{color:var(--muted); font-size:13.5px; max-width:66ch;}
+/* Не оставлять последнее слово одно на строке: «…а не в карточке / 1С.» */
+.lede,.note,.band .ds,.где p,.warn p,.plate .sub{text-wrap:pretty;}
 
 /* ── шапка-шильдик ───────────────────────────────────────── */
 .plate{position:relative; padding:var(--plate-top) var(--pad) clamp(26px,4vw,40px); border-top:3px solid var(--flame);}
@@ -178,11 +180,14 @@ p{margin:0;}
 /* ── каналы ──────────────────────────────────────────────── */
 .где{margin-top:28px; display:grid; grid-template-columns:repeat(auto-fit,minmax(226px,1fr)); gap:1px;
   background:var(--line); border:1px solid var(--line);}
-.где > div{background:var(--surface); padding:18px 17px;}
+.где > div{background:var(--surface); padding:18px 17px; display:flex; flex-direction:column;}
 .где h3{font-size:15px; font-weight:700; margin-bottom:7px; letter-spacing:-.01em;}
 .где p{font-size:13.5px; color:var(--ink-2);}
-.где .use{margin-top:11px; font-family:var(--mono); font-size:11px; letter-spacing:.1em;
-  text-transform:uppercase; color:var(--flame);}
+/* margin-top:auto прижимает метку слоя к низу карточки. Карточки в сетке
+   одной высоты, поэтому все четыре метки встают на один уровень независимо
+   от длины текста над ними. */
+.где .use{margin-top:auto; padding-top:14px; font-family:var(--mono); font-size:11px;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--flame);}
 
 /* ── предупреждение ──────────────────────────────────────── */
 .warn{margin-top:26px; border:1px solid var(--flame); border-left-width:4px;
@@ -471,7 +476,7 @@ a:focus-visible,.chip:focus-visible{outline:2px solid var(--flame); outline-offs
   <section>
     <span class="eyebrow" style="color:var(--cool)">Слой 04 · добавлено вручную</span>
     <h2 class="h-sec">Отраслевые фразы</h2>
-    <p class="lede">Этого в базе нет и вычислить неоткуда — так говорят на рынке, а не в карточке 1С.</p>
+    <p class="lede">Этого в базе нет и вычислить неоткуда — так говорят на&nbsp;рынке, а не в&nbsp;карточке&nbsp;1С.</p>
 
     <div class="groups">
       <div class="group">
