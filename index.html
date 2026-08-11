@@ -104,6 +104,18 @@ p{margin:0;}
 .msg:hover{transform:translateY(-2px); filter:brightness(1.08);}
 .msg-wa{background:#25D366;}
 .msg-tg{background:#26A5E4;}
+/* MAX: значок фирменный, с собственным градиентом внутри SVG, поэтому фона
+   у плитки нет — картинка сама заполняет квадрат. */
+.msg-max{background:none; padding:0;}
+.msg-max svg{width:44px; height:44px; border-radius:3px;}
+.msg .copied{
+  position:absolute; left:50%; transform:translate(-50%,6px); bottom:-26px;
+  font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--flame); white-space:nowrap; opacity:0; pointer-events:none;
+  transition:opacity .2s ease, transform .2s ease;
+}
+.msg.is-copied .copied{opacity:1; transform:translate(-50%,0);}
+.msg{position:relative;}
 @media (prefers-reduced-motion:reduce){ .msg{transition:none;} }
 
 /* ── полоса цифр ─────────────────────────────────────────── */
@@ -223,6 +235,17 @@ a:focus-visible,.chip:focus-visible{outline:2px solid var(--flame); outline-offs
 
     <div class="contact">
       <div class="msgs">
+        <a class="msg msg-max" href="https://max.ru/" target="_blank" rel="noopener noreferrer" data-phone="+79162279920" title="Открыть MAX и найти по номеру +7 916 227-99-20 — номер копируется по клику" aria-label="Написать в MAX">
+          <svg viewBox="0 0 1000 1000" aria-hidden="true">
+            <defs>
+              <linearGradient id="maxA"><stop offset="0" stop-color="#4cf"/><stop offset=".662" stop-color="#53e"/><stop offset="1" stop-color="#93d"/></linearGradient>
+              <linearGradient id="maxC" x1="117.847" x2="1000" y1="760.536" y2="500" gradientUnits="userSpaceOnUse" href="#maxA"/>
+            </defs>
+            <rect width="1000" height="1000" fill="url(#maxC)" ry="249.681"/>
+            <path fill="#fff" fill-rule="evenodd" d="M508.211 878.328c-75.007 0-109.864-10.95-170.453-54.75-38.325 49.275-159.686 87.783-164.979 21.9 0-49.456-10.95-91.248-23.36-136.873-14.782-56.21-31.572-118.807-31.572-209.508 0-216.626 177.754-379.597 388.357-379.597 210.785 0 375.947 171.001 375.947 381.604.707 207.346-166.595 376.118-373.94 377.224m3.103-571.585c-102.564-5.292-182.499 65.7-200.201 177.024-14.6 92.162 11.315 204.398 33.397 210.238 10.585 2.555 37.23-18.98 53.837-35.587a189.8 189.8 0 0 0 92.71 33.032c106.273 5.112 197.08-75.794 204.215-181.95 4.154-106.382-77.67-196.486-183.958-202.574Z" clip-rule="evenodd"/>
+          </svg>
+          <span class="copied">номер скопирован</span>
+        </a>
         <a class="msg msg-wa" href="https://wa.me/79162279920" target="_blank" rel="noopener noreferrer" title="Написать в WhatsApp" aria-label="Написать в WhatsApp">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
         </a>
@@ -539,6 +562,25 @@ a:focus-visible,.chip:focus-visible{outline:2px solid var(--flame); outline-offs
 </main>
 
 <script>
+/* MAX не умеет открывать чат по номеру: в официальной документации
+   (dev.max.ru/help/deeplinks) есть только ссылки на ботов, мини-приложения и
+   шеринг текста, а сервер на любой URL с номером отдаёт общую заглушку.
+   Поэтому значок открывает MAX и одновременно кладёт номер в буфер — остаётся
+   вставить его в поиск. Когда появится личная ссылка вида max.ru/u/<хеш>,
+   этот блок не нужен: достаточно поменять href у .msg-max. */
+(function(){
+  var max = document.querySelector('.msg-max');
+  if(!max) return;
+  max.addEventListener('click', function(){
+    var phone = max.getAttribute('data-phone');
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(phone).catch(function(){});
+    }
+    max.classList.add('is-copied');
+    setTimeout(function(){ max.classList.remove('is-copied'); }, 2200);
+  });
+})();
+
 (function(){
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var bars = Array.prototype.slice.call(document.querySelectorAll('.row .bar i'));
