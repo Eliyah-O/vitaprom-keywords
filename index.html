@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ключевые слова для поиска запросов — ВИТАПРОМ</title>
+<style>
+:root{
+  --ground:#EDF0EE; --surface:#FAFCFA; --plate:#E3E8E5;
+  --ink:#141A1C; --ink-2:#38474A; --muted:#5E6E70;
+  --flame:#BE4317; --flame-soft:rgba(190,67,23,.10);
+  --cool:#166A72; --cool-soft:rgba(22,106,114,.10);
+  --line:rgba(20,26,28,.14); --line-2:rgba(20,26,28,.07);
+  --mono:ui-monospace,"SF Mono",Menlo,"DejaVu Sans Mono",Consolas,"Liberation Mono",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --pad:clamp(18px,4.5vw,56px);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --ground:#11161A; --surface:#181F23; --plate:#1F282C;
+    --ink:#E7ECEA; --ink-2:#B4C2C3; --muted:#8B9C9E;
+    --flame:#EE6B2E; --flame-soft:rgba(238,107,46,.13);
+    --cool:#48A9B0; --cool-soft:rgba(72,169,176,.13);
+    --line:rgba(231,236,234,.16); --line-2:rgba(231,236,234,.08);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#11161A; --surface:#181F23; --plate:#1F282C;
+  --ink:#E7ECEA; --ink-2:#B4C2C3; --muted:#8B9C9E;
+  --flame:#EE6B2E; --flame-soft:rgba(238,107,46,.13);
+  --cool:#48A9B0; --cool-soft:rgba(72,169,176,.13);
+  --line:rgba(231,236,234,.16); --line-2:rgba(231,236,234,.08);
+}
+:root[data-theme="light"]{
+  --ground:#EDF0EE; --surface:#FAFCFA; --plate:#E3E8E5;
+  --ink:#141A1C; --ink-2:#38474A; --muted:#5E6E70;
+  --flame:#BE4317; --flame-soft:rgba(190,67,23,.10);
+  --cool:#166A72; --cool-soft:rgba(22,106,114,.10);
+  --line:rgba(20,26,28,.14); --line-2:rgba(20,26,28,.07);
+}
+
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--sans); font-size:16px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.sheet{max-width:1080px; margin:0 auto; background:var(--surface);
+  border-left:1px solid var(--line-2); border-right:1px solid var(--line-2);}
+section{padding:clamp(34px,6vw,64px) var(--pad); border-top:1px solid var(--line);}
+h1,h2,h3{margin:0; text-wrap:balance;}
+p{margin:0;}
+.num{font-variant-numeric:tabular-nums;}
+
+/* ── типографика ─────────────────────────────────────────── */
+.eyebrow{
+  font-family:var(--mono); font-size:11px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--muted); display:block;
+}
+.h-sec{font-size:clamp(24px,4.4vw,34px); font-weight:750; letter-spacing:-.022em; line-height:1.12;}
+.lede{color:var(--ink-2); max-width:62ch; font-size:clamp(15px,1.7vw,17px); margin-top:14px;}
+.note{color:var(--muted); font-size:13.5px; max-width:66ch;}
+
+/* ── шапка-шильдик ───────────────────────────────────────── */
+.plate{padding:clamp(30px,6vw,60px) var(--pad) clamp(26px,4vw,40px); border-top:3px solid var(--flame);}
+.plate h1{font-size:clamp(30px,6.6vw,58px); font-weight:800; letter-spacing:-.032em; line-height:1.03; margin-top:18px;}
+.plate .sub{margin-top:16px; font-size:clamp(15px,2vw,18px); color:var(--ink-2); max-width:56ch;}
+.stamp{display:flex; flex-wrap:wrap; gap:8px 20px; align-items:baseline;}
+.stamp b{font-family:var(--mono); font-size:12px; letter-spacing:.2em; text-transform:uppercase; font-weight:600;}
+.meta{
+  margin-top:30px; padding-top:18px; border-top:1px solid var(--line);
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr)); gap:18px 24px;
+}
+.meta div span{display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:5px;}
+.meta div strong{font-family:var(--mono); font-size:14px; font-weight:600; letter-spacing:-.01em;}
+
+/* ── полоса цифр ─────────────────────────────────────────── */
+.stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px;
+  background:var(--line); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+.stats > div{background:var(--surface); padding:22px var(--pad);}
+.stats .v{font-family:var(--mono); font-size:clamp(26px,4.6vw,38px); font-weight:600;
+  letter-spacing:-.03em; line-height:1; font-variant-numeric:tabular-nums;}
+.stats .v i{font-style:normal; font-size:.46em; letter-spacing:.02em; color:var(--muted); margin-left:5px;}
+.stats .k{margin-top:9px; font-size:13px; color:var(--muted); line-height:1.35;}
+
+/* ── воронка слоёв ───────────────────────────────────────── */
+.funnel{margin-top:34px; display:flex; flex-direction:column; gap:10px;}
+.band{border:1px solid var(--line); border-left-width:4px; background:var(--plate);
+  padding:15px 18px; position:relative; overflow:hidden;}
+.band .fill{position:absolute; inset:0 auto 0 0; opacity:.13; width:0; transition:width 1.1s cubic-bezier(.22,.8,.28,1);}
+.band > *{position:relative;}
+.band .top{display:flex; flex-wrap:wrap; gap:6px 12px; align-items:baseline;}
+.band .no{font-family:var(--mono); font-size:11px; letter-spacing:.14em; font-weight:700;}
+.band .nm{font-weight:700; font-size:clamp(16px,2.3vw,19px); letter-spacing:-.015em;}
+.band .cnt{font-family:var(--mono); font-size:12px; color:var(--muted); margin-left:auto;}
+.band .ds{margin-top:6px; font-size:14px; color:var(--ink-2); max-width:64ch;}
+.band .gauge{margin-top:10px; display:flex; gap:14px; flex-wrap:wrap;
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted);}
+.dots{letter-spacing:.18em;}
+
+/* ── таблица-диаграмма ───────────────────────────────────── */
+.rows{margin-top:30px; display:flex; flex-direction:column;}
+.row{display:grid; grid-template-columns:minmax(0,1fr); gap:10px 14px;
+  align-items:center; padding:11px 0; border-bottom:1px solid var(--line-2);}
+.row:first-child{border-top:1px solid var(--line);}
+.row .lbl{min-width:0;}
+.row .code{font-family:var(--mono); font-weight:650; font-size:clamp(15px,2.2vw,17px); letter-spacing:-.01em;}
+.row .sub{font-family:var(--mono); font-size:11.5px; color:var(--muted); margin-top:3px;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.row .txt{font-weight:600; font-size:clamp(15px,2.1vw,17px); letter-spacing:-.012em;}
+.row .en{font-size:12.5px; color:var(--muted); margin-top:3px;}
+.row .val{font-family:var(--mono); font-size:14px; font-weight:600; text-align:right;
+  font-variant-numeric:tabular-nums; white-space:nowrap;}
+.row .bar{grid-column:1 / -1; height:5px; background:var(--line-2); overflow:hidden;}
+.row .bar i{display:block; height:100%; width:0; transition:width 1s cubic-bezier(.22,.8,.28,1);}
+
+/* ── стена кодов ─────────────────────────────────────────── */
+.chips{margin-top:22px; display:flex; flex-wrap:wrap; gap:6px;}
+.chip{font-family:var(--mono); font-size:12.5px; padding:5px 9px; border:1px solid var(--line);
+  background:var(--plate); letter-spacing:.01em;}
+
+/* ── бренды ──────────────────────────────────────────────── */
+.brands{margin-top:30px; display:grid; grid-template-columns:repeat(auto-fill,minmax(232px,1fr)); gap:1px;
+  background:var(--line); border:1px solid var(--line);}
+.brand{background:var(--surface); padding:18px 16px; display:flex; flex-direction:column; gap:9px;}
+.wordmark{font-size:clamp(17px,2.6vw,21px); line-height:1.1; letter-spacing:-.03em; font-weight:800;}
+.wm-thin{font-weight:300; letter-spacing:.01em;}
+.wm-caps{text-transform:uppercase; font-size:clamp(14px,2.1vw,17px); letter-spacing:.11em; font-weight:700;}
+.wm-mono{font-family:var(--mono); font-weight:600; letter-spacing:-.02em;}
+.wm-wide{letter-spacing:.06em; font-weight:600;}
+.cyr{font-size:12.5px; color:var(--ink-2); line-height:1.4;}
+.cyr b{font-weight:600; color:var(--ink);}
+.brand .foot b{font-size:14px; font-weight:650; color:var(--ink);}
+
+/* ── фразы ───────────────────────────────────────────────── */
+.groups{margin-top:28px; display:grid; grid-template-columns:repeat(auto-fit,minmax(258px,1fr)); gap:26px 30px;}
+.group h3{font-size:14px; font-weight:700; letter-spacing:-.005em; padding-bottom:9px;
+  border-bottom:1px solid var(--line); margin-bottom:12px;}
+.tags{display:flex; flex-wrap:wrap; gap:6px;}
+.tag{font-size:13px; padding:5px 10px; border:1px solid var(--line); background:var(--plate);}
+
+/* ── каналы ──────────────────────────────────────────────── */
+.где{margin-top:28px; display:grid; grid-template-columns:repeat(auto-fit,minmax(226px,1fr)); gap:1px;
+  background:var(--line); border:1px solid var(--line);}
+.где > div{background:var(--surface); padding:18px 17px;}
+.где h3{font-size:15px; font-weight:700; margin-bottom:7px; letter-spacing:-.01em;}
+.где p{font-size:13.5px; color:var(--ink-2);}
+.где .use{margin-top:11px; font-family:var(--mono); font-size:11px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--flame);}
+
+/* ── предупреждение ──────────────────────────────────────── */
+.warn{margin-top:26px; border:1px solid var(--flame); border-left-width:4px;
+  background:var(--flame-soft); padding:16px 18px;}
+.warn b{display:block; font-family:var(--mono); font-size:11px; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--flame); margin-bottom:7px;}
+.warn p{font-size:14px; color:var(--ink-2); max-width:66ch;}
+
+/* ── подвал ──────────────────────────────────────────────── */
+footer{padding:26px var(--pad) 42px; border-top:1px solid var(--line);
+  font-family:var(--mono); font-size:11.5px; color:var(--muted); line-height:1.7;}
+footer span{color:var(--ink-2);}
+
+a:focus-visible,.chip:focus-visible{outline:2px solid var(--flame); outline-offset:2px;}
+@media (prefers-reduced-motion:reduce){
+  .band .fill,.row .bar i{transition:none;}
+}
+:root.no-anim .band .fill,:root.no-anim .row .bar i{transition:none;}
+@media print{
+  body{background:#fff;}
+  .sheet{max-width:none; border:0;}
+  section,.brand,.где > div,.stats > div{break-inside:avoid;}
+  .band,.row,.warn{break-inside:avoid;}
+}
+@media (max-width:520px){
+  .row{grid-template-columns:minmax(0,1fr);}
+  .row .sub{white-space:normal;}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="plate">
+    <div class="stamp">
+      <b style="color:var(--flame)">ВИТАПРОМ</b>
+      <span class="eyebrow">Группа компаний · коммерческий отдел</span>
+    </div>
+    <h1>Ключевые слова<br>для поиска запросов</h1>
+    <p class="sub">Чем ловить чужие заявки на то, чем мы торгуем: тендеры, доски, форумы, контекст. Список собран из нашей базы и отранжирован по спросу — сверху то, за чем приходят чаще всего.</p>
+    <div class="meta">
+      <div><span>Источник</span><strong>1С: номенклатура + продажи</strong></div>
+      <div><span>Период</span><strong>2024 — 2026</strong></div>
+      <div><span>Контур</span><strong>российские юрлица</strong></div>
+      <div><span>Собрано</span><strong>11.08.2026</strong></div>
+    </div>
+  </header>
+
+
+  <section>
+    <span class="eyebrow">Устройство списка</span>
+    <h2 class="h-sec">Четыре слоя: чем шире охват, тем больше шума</h2>
+    <p class="lede">Слои различаются не темой, а намерением того, кто пишет запрос. Внизу — люди, которые ещё выбирают. Наверху — те, кто уже знает артикул и покупает сегодня.</p>
+
+    <div class="funnel">
+      <div class="band" style="border-left-color:var(--flame)" data-w="14">
+        <i class="fill" style="background:var(--flame)"></i>
+        <div class="top">
+          <span class="no" style="color:var(--flame)">СЛОЙ 01</span>
+          <span class="nm">Серии артикулов</span>
+        </div>
+        <p class="ds">VR4601, S4565, LME41. Кто пишет такой код — уже знает, что ему нужно.</p>
+        <div class="gauge">
+          <span>Точность <b class="dots" style="color:var(--flame)">●●●●●</b></span>
+          <span>Охват <b class="dots">●○○○○</b></span>
+          <span>Шум почти нулевой</span>
+        </div>
+      </div>
+
+      <div class="band" style="border-left-color:#A2521F" data-w="36">
+        <i class="fill" style="background:#A2521F"></i>
+        <div class="top">
+          <span class="no" style="color:#A2521F">СЛОЙ 02</span>
+          <span class="nm">Связки «бренд + тип»</span>
+        </div>
+        <p class="ds">«Клапан газовый Resideo». Клиент знает марку, но не помнит артикул.</p>
+        <div class="gauge">
+          <span>Точность <b class="dots" style="color:#A2521F">●●●●○</b></span>
+          <span>Охват <b class="dots">●●○○○</b></span>
+          <span>Обе перестановки слов</span>
+        </div>
+      </div>
+
+      <div class="band" style="border-left-color:#4B6355" data-w="64">
+        <i class="fill" style="background:#4B6355"></i>
+        <div class="top">
+          <span class="no" style="color:#4B6355">СЛОЙ 03</span>
+          <span class="nm">Бренды</span>
+        </div>
+        <p class="ds">Латиницей и кириллицей. Половина запросов в РФ идёт кириллицей.</p>
+        <div class="gauge">
+          <span>Точность <b class="dots" style="color:#4B6355">●●●○○</b></span>
+          <span>Охват <b class="dots">●●●○○</b></span>
+          <span>Ловится и чужой ассортимент</span>
+        </div>
+      </div>
+
+      <div class="band" style="border-left-color:var(--cool)" data-w="100">
+        <i class="fill" style="background:var(--cool)"></i>
+        <div class="top">
+          <span class="no" style="color:var(--cool)">СЛОЙ 04</span>
+          <span class="nm">Типы изделий и общие фразы</span>
+        </div>
+        <p class="ds">«Блок управления горением», «запчасти для горелок». Бренда клиент не знает.</p>
+        <div class="gauge">
+          <span>Точность <b class="dots" style="color:var(--cool)">●●○○○</b></span>
+          <span>Охват <b class="dots">●●●●●</b></span>
+          <span>Много посторонних срабатываний</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow" style="color:var(--flame)">Слой 01 · самый ценный</span>
+    <h2 class="h-sec">Серии артикулов</h2>
+    <p class="lede">Буквоцифровой код больше нигде не встречается, поэтому ложных срабатываний практически нет. С этого слоя и начинать: он даёт готовых покупателей, а не любопытных.</p>
+
+    <div class="rows" data-bars>
+      <div class="row"><div class="lbl"><div class="code">VR4601</div><div class="sub">Resideo · VR4601CB1024B, VR4601QB2019B, VR4601C1077U</div></div><div class="bar"><i style="background:var(--flame)" data-v="100"></i></div></div>
+      <div class="row"><div class="lbl"><div class="code">S4565</div><div class="sub">Resideo · S4565BF1161B, S4565AD2080U, S4565R1014B</div></div><div class="bar"><i style="background:var(--flame)" data-v="91"></i></div></div>
+      <div class="row"><div class="lbl"><div class="code">S4962</div><div class="sub">Resideo · S4962DM3003B, S4962CM1004V04U, S4962V3000B</div></div><div class="bar"><i style="background:var(--flame)" data-v="71"></i></div></div>
+      <div class="row"><div class="lbl"><div class="code">S4966</div><div class="sub">Resideo · S4966V2029, S4966V2151B</div></div><div class="bar"><i style="background:var(--flame)" data-v="68"></i></div></div>
+      <div class="row"><div class="lbl"><div class="code">VK4100</div><div class="sub">Resideo · VK4100C1026U, VK4100C1067B, VK4100C1000B</div></div><div class="bar"><i style="background:var(--flame)" data-v="54"></i></div></div>
+      <div class="row"><div class="lbl"><div class="code">DSP49</div><div class="sub">Resideo · DSP49G2193, DSP49G2037</div></div><div class="bar"><i style="background:var(--flame)" data-v="53"></i></div></div>
+      <div class="row"><div class="lbl"><div class="code">VK4115</div><div class="sub">Resideo · VK4115V1204U, VK4115V1014B, VK4115A1000U</div></div><div class="bar"><i style="background:var(--flame)" data-v="51"></i></div></div>
+      <div class="row"><div class="lbl"><div class="code">SM1146</div><div class="sub">Ademco · SM11469U, SM11462U</div></div><div class="bar"><i style="background:var(--flame)" data-v="38"></i></div></div>
+      <div class="row"><div class="lbl"><div class="code">VR4605</div><div class="sub">Ademco · VR4605DB1008U, VR4605CB1025U, VR4605CB1058B</div></div><div class="bar"><i style="background:var(--flame)" data-v="37"></i></div></div>
+      <div class="row"><div class="lbl"><div class="code">FR124</div><div class="sub">Honeywell · FR124AM-3/4-R, FR124-3/4A</div></div><div class="bar"><i style="background:var(--flame)" data-v="27"></i></div></div>
+      <div class="row"><div class="lbl"><div class="code">LKS210</div><div class="sub">Resideo · LKS210-21, LKS210-10, LKS210-08</div></div><div class="bar"><i style="background:var(--flame)" data-v="25"></i></div></div>
+      <div class="row"><div class="lbl"><div class="code">S4564</div><div class="sub">Resideo · S4564C1000U, S4564BF1006B, S4564QT1006U</div></div><div class="bar"><i style="background:var(--flame)" data-v="24"></i></div></div>
+    </div>
+    <p class="note" style="margin-top:14px;">Полный список серий — в рабочей таблице.</p>
+
+    <div class="chips">
+      <span class="chip">VR434</span><span class="chip">LME41</span><span class="chip">VR432</span><span class="chip">C60</span>
+      <span class="chip">L4064</span><span class="chip">VR4611</span><span class="chip">VK4105</span><span class="chip">VK8205</span>
+      <span class="chip">SM1650</span><span class="chip">S4560</span><span class="chip">TRIO500</span><span class="chip">S4960</span>
+      <span class="chip">VS8620</span><span class="chip">S4965</span><span class="chip">VQ450</span><span class="chip">ETF51</span>
+      <span class="chip">VK8515</span><span class="chip">TRE820</span><span class="chip">C7061</span><span class="chip">VMU680</span>
+      <span class="chip">M7284</span><span class="chip">LKS160</span><span class="chip">M6284</span><span class="chip">VMU335</span>
+      <span class="chip">SQN72</span><span class="chip">V4600</span><span class="chip">C7027</span><span class="chip">VR4625</span>
+      <span class="chip">LKS310</span><span class="chip">VB420</span><span class="chip">SKP55</span><span class="chip">TRS820</span>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow" style="color:#A2521F">Слой 02</span>
+    <h2 class="h-sec">Связки «бренд + тип»</h2>
+    <p class="lede">Клиент помнит марку, но не артикул. Порядок слов в запросе плавает — ставить обе перестановки: и «клапан газовый Resideo», и «Resideo клапан газовый».</p>
+
+    <div class="rows" data-bars>
+      <div class="row"><div class="lbl"><div class="txt">клапан газовый Resideo</div></div><div class="bar"><i style="background:#A2521F" data-v="100"></i></div></div>
+      <div class="row"><div class="lbl"><div class="txt">контроллер управления Resideo</div></div><div class="bar"><i style="background:#A2521F" data-v="94"></i></div></div>
+      <div class="row"><div class="lbl"><div class="txt">блок управления Brahma</div></div><div class="bar"><i style="background:#A2521F" data-v="71"></i></div></div>
+      <div class="row"><div class="lbl"><div class="txt">форсунка Danfoss</div></div><div class="bar"><i style="background:#A2521F" data-v="65"></i></div></div>
+      <div class="row"><div class="lbl"><div class="txt">блок управления Resideo</div></div><div class="bar"><i style="background:#A2521F" data-v="60"></i></div></div>
+      <div class="row"><div class="lbl"><div class="txt">клапан Honeywell</div></div><div class="bar"><i style="background:#A2521F" data-v="42"></i></div></div>
+      <div class="row"><div class="lbl"><div class="txt">плата Resideo</div></div><div class="bar"><i style="background:#A2521F" data-v="41"></i></div></div>
+      <div class="row"><div class="lbl"><div class="txt">клапан Ademco</div></div><div class="bar"><i style="background:#A2521F" data-v="37"></i></div></div>
+      <div class="row"><div class="lbl"><div class="txt">вентилятор ebm-papst</div></div><div class="bar"><i style="background:#A2521F" data-v="34"></i></div></div>
+      <div class="row"><div class="lbl"><div class="txt">дисплей Resideo</div></div><div class="bar"><i style="background:#A2521F" data-v="29"></i></div></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow" style="color:#4B6355">Слой 03</span>
+    <h2 class="h-sec">Бренды — латиницей и кириллицей</h2>
+    <p class="lede">Кириллица не факультатив. «Хонивелл» и «Кромшредер» пишут не реже латиницы, а часть площадок латинский запрос вообще не находит. В карточках — и устойчивые опечатки: это не наши описки, а реальные варианты написания.</p>
+
+    <div class="brands">
+      <div class="brand">
+        <div class="wordmark wm-wide">Resideo</div>
+        <div class="cyr"><b>Резидео</b>, Ресидео</div>
+      </div>
+      <div class="brand">
+        <div class="wordmark">Honeywell</div>
+        <div class="cyr"><b>Хонивелл</b>, Ханивелл, Хоневелл, Хонейвелл</div>
+      </div>
+      <div class="brand">
+        <div class="wordmark wm-caps">Kromschroder</div>
+        <div class="cyr"><b>Кромшредер</b>, Кромшрёдер, Кромшродер · также Krom Schroder, Elster</div>
+      </div>
+      <div class="brand">
+        <div class="wordmark wm-thin">Brahma</div>
+        <div class="cyr"><b>Брахма</b>, Брама</div>
+      </div>
+      <div class="brand">
+        <div class="wordmark wm-wide">Danfoss</div>
+        <div class="cyr"><b>Данфосс</b>, Данфос</div>
+      </div>
+      <div class="brand">
+        <div class="wordmark wm-caps">Ademco</div>
+        <div class="cyr"><b>Адемко</b> · бренд группы Resideo / Honeywell</div>
+      </div>
+      <div class="brand">
+        <div class="wordmark wm-thin">SIEMENS</div>
+        <div class="cyr"><b>Сименс</b> · также Landis, Siemens Landis</div>
+      </div>
+      <div class="brand">
+        <div class="wordmark wm-mono">ebm-papst</div>
+        <div class="cyr"><b>ЭБМ Папст</b>, эбмпапст, EBM</div>
+      </div>
+      <div class="brand">
+        <div class="wordmark wm-caps">SIT</div>
+        <div class="cyr"><b>СИТ</b> · также SIT Group, Sit La Precisa</div>
+      </div>
+      <div class="brand">
+        <div class="wordmark wm-mono">COFI</div>
+        <div class="cyr"><b>Кофи</b></div>
+      </div>
+      <div class="brand">
+        <div class="wordmark wm-wide">Bekaert</div>
+        <div class="cyr"><b>Бекарт</b></div>
+      </div>
+      <div class="brand">
+        <div class="wordmark wm-caps">ACV</div>
+        <div class="cyr"><b>АЦВ</b>, АСВ</div>
+      </div>
+      <div class="brand">
+        <div class="wordmark wm-thin">De Dietrich</div>
+        <div class="cyr"><b>Де Дитрих</b>, Дедитрих</div>
+      </div>
+      <div class="brand">
+        <div class="wordmark wm-mono">HP-Technik</div>
+        <div class="cyr"><b>ХП Техник</b>, HP Technik</div>
+      </div>
+      <div class="brand">
+        <div class="wordmark wm-wide">Delavan</div>
+        <div class="cyr"><b>Делаван</b></div>
+      </div>
+      <div class="brand">
+        <div class="wordmark wm-caps">Dungs</div>
+        <div class="cyr"><b>Дунгс</b>, Дангс</div>
+      </div>
+    </div>
+    
+
+    <div class="warn">
+      <b>Длина прайса ≠ спрос</b>
+      <p>У De Dietrich карточек в номенклатуре несопоставимо больше, чем у Resideo, а спрос идёт на Resideo. Ранжировать список по длине прайса было бы ошибкой: искать надо там, где покупают.</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow" style="color:var(--cool)">Слой 04</span>
+    <h2 class="h-sec">Типы изделий</h2>
+    <p class="lede">Самый широкий охват и самый сильный шум: «клапан» найдёт и сантехнику, и гидравлику. Зато ловятся клиенты, которые бренда не знают вовсе. Английский столбец — для производителей и зарубежных площадок.</p>
+
+    <div class="rows" data-bars>
+      <div class="row"><div class="lbl"><div class="txt">блок управления горением</div><div class="en">burner control · flame safeguard</div></div><div class="bar"><i style="background:var(--cool)" data-v="100"></i></div></div>
+      <div class="row"><div class="lbl"><div class="txt">клапан газовый</div><div class="en">gas valve · gas control valve</div></div><div class="bar"><i style="background:var(--cool)" data-v="90"></i></div></div>
+      <div class="row"><div class="lbl"><div class="txt">контроллер управления</div><div class="en">control unit · burner controller</div></div><div class="bar"><i style="background:var(--cool)" data-v="71"></i></div></div>
+      <div class="row"><div class="lbl"><div class="txt">форсунка</div><div class="en">oil nozzle · burner nozzle</div></div><div class="bar"><i style="background:var(--cool)" data-v="45"></i></div></div>
+      <div class="row"><div class="lbl"><div class="txt">трансформатор розжига</div><div class="en">ignition transformer</div></div><div class="bar"><i style="background:var(--cool)" data-v="38"></i></div></div>
+      <div class="row"><div class="lbl"><div class="txt">сервопривод</div><div class="en">actuator · servomotor · damper actuator</div></div><div class="bar"><i style="background:var(--cool)" data-v="30"></i></div></div>
+      <div class="row"><div class="lbl"><div class="txt">плата электронная</div><div class="en">PCB · electronic control board</div></div><div class="bar"><i style="background:var(--cool)" data-v="27"></i></div></div>
+      <div class="row"><div class="lbl"><div class="txt">вентилятор</div><div class="en">fan · blower · combustion air fan</div></div><div class="bar"><i style="background:var(--cool)" data-v="21"></i></div></div>
+      <div class="row"><div class="lbl"><div class="txt">датчик-реле давления</div><div class="en">pressure switch</div></div><div class="bar"><i style="background:var(--cool)" data-v="18"></i></div></div>
+      <div class="row"><div class="lbl"><div class="txt">датчик пламени</div><div class="en">flame detector · UV cell · photocell</div></div><div class="bar"><i style="background:var(--cool)" data-v="10"></i></div></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow" style="color:var(--cool)">Слой 04 · добавлено вручную</span>
+    <h2 class="h-sec">Отраслевые фразы</h2>
+    <p class="lede">Этого в базе нет и вычислить неоткуда — так говорят на рынке, а не в карточке 1С.</p>
+
+    <div class="groups">
+      <div class="group">
+        <h3>Клиент не знает бренда</h3>
+        <div class="tags">
+          <span class="tag">запчасти для горелок</span><span class="tag">ЗИП для горелок</span>
+          <span class="tag">запчасти для газовых котлов</span><span class="tag">запчасти для дизельных горелок</span>
+          <span class="tag">комплектующие для горелок</span><span class="tag">ремонт газовой горелки</span>
+          <span class="tag">автоматика для котлов</span><span class="tag">газовая автоматика</span>
+        </div>
+      </div>
+      <div class="group">
+        <h3>Говорят профессионалы</h3>
+        <div class="tags">
+          <span class="tag">блок розжига</span><span class="tag">автомат горения</span>
+          <span class="tag">топочный автомат</span><span class="tag">контроль пламени</span>
+          <span class="tag">газовая рампа</span><span class="tag">газовый мультиблок</span>
+          <span class="tag">блок контроля герметичности</span><span class="tag">модуляция горелки</span>
+          <span class="tag">пусконаладка котельной</span>
+        </div>
+      </div>
+      <div class="group">
+        <h3>Так ищутся сами клиенты</h3>
+        <div class="tags">
+          <span class="tag">сервис котельного оборудования</span><span class="tag">обслуживание котельных</span>
+          <span class="tag">сервисный центр горелок</span><span class="tag">монтаж котельных</span>
+          <span class="tag">производство горелок</span><span class="tag">сборка котлов</span>
+        </div>
+      </div>
+      <div class="group">
+        <h3>Повод для звонка</h3>
+        <div class="tags">
+          <span class="tag">аналог</span><span class="tag">чем заменить</span>
+          <span class="tag">снят с производства</span><span class="tag">замена артикула</span>
+          <span class="tag">кросс-номер</span><span class="tag">аналог Honeywell</span><span class="tag">аналог Resideo</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Применение</span>
+    <h2 class="h-sec">Где искать и чем</h2>
+
+    <div class="где">
+      <div>
+        <h3>Тендеры и закупки</h3>
+        <p>zakupki.gov.ru, B2B-Center, РТС-тендер, Росэлторг. Техзадание почти всегда содержит точный артикул.</p>
+        <div class="use">слой 01</div>
+      </div>
+      <div>
+        <h3>Доски и маркетплейсы</h3>
+        <p>Авито, Пульс цен, Тиу. Здесь пишут словами: марка плюс тип изделия.</p>
+        <div class="use">слои 02 — 03</div>
+      </div>
+      <div>
+        <h3>Форумы и чаты теплотехников</h3>
+        <p>Профессиональная лексика и вопросы «чем заменить». Заявка приходит не сразу, но клиент остаётся надолго.</p>
+        <div class="use">слой 04</div>
+      </div>
+      <div>
+        <h3>Контекстная реклама</h3>
+        <p>Артикул даёт самую дешёвую заявку, общая фраза — самую дорогую. Бюджет распределять в этом же порядке.</p>
+        <div class="use">слой 01 → 04</div>
+      </div>
+    </div>
+
+    <div class="warn" style="border-color:var(--cool); background:var(--cool-soft);">
+      <b style="color:var(--cool)">Разумный старт</b>
+      <p>Не брать все четыре слоя сразу. Верхушка первого слоя плюс несколько связок из второго — этого хватает, чтобы понять, какие каналы вообще дают отклик. Артикулов ВИТАПРОМ (ххх.ххх.ххх) в списке намеренно нет: их знаем только мы, снаружи по ним никто не ищет.</p>
+    </div>
+  </section>
+
+  <footer>
+    Публичная версия: только ключевые слова. Количественные показатели не приводятся.
+  </footer>
+
+</main>
+
+<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bars = Array.prototype.slice.call(document.querySelectorAll('.row .bar i'));
+  var bands = Array.prototype.slice.call(document.querySelectorAll('.band'));
+
+  function fill(el){
+    if(el.classList.contains('band')){
+      el.querySelector('.fill').style.width = el.getAttribute('data-w') + '%';
+    } else {
+      el.style.width = el.getAttribute('data-v') + '%';
+    }
+  }
+  var all = bars.concat(bands);
+
+  // Печать и экспорт в PDF: анимация не успевает отработать, диаграммы уходят
+  // в файл пустыми. Поэтому ?static=1 (и обычный «Печать») заполняет всё сразу.
+  var static_ = /(?:^|[?&])static/.test(location.search);
+  function fillAll(){
+    document.documentElement.classList.add('no-anim');
+    all.forEach(fill);
+  }
+  window.addEventListener('beforeprint', fillAll);
+
+  if(reduce || static_ || !('IntersectionObserver' in window)){
+    fillAll();
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var el = e.target;
+      var group = el.classList.contains('band') ? bands : bars;
+      var idx = group.indexOf(el);
+      setTimeout(function(){ fill(el); }, Math.min(idx, 12) * 55);
+      io.unobserve(el);
+    });
+  }, {threshold:0.25, rootMargin:'0px 0px -8% 0px'});
+  all.forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>
