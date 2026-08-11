@@ -14,6 +14,7 @@
   --mono:ui-monospace,"SF Mono",Menlo,"DejaVu Sans Mono",Consolas,"Liberation Mono",monospace;
   --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --pad:clamp(18px,4.5vw,56px);
+  --plate-top:clamp(30px,6vw,60px);
 }
 @media (prefers-color-scheme:dark){
   :root{
@@ -63,23 +64,29 @@ p{margin:0;}
 .note{color:var(--muted); font-size:13.5px; max-width:66ch;}
 
 /* ── шапка-шильдик ───────────────────────────────────────── */
-.plate{padding:clamp(30px,6vw,60px) var(--pad) clamp(26px,4vw,40px); border-top:3px solid var(--flame);}
-.plate h1{font-size:clamp(30px,6.6vw,58px); font-weight:800; letter-spacing:-.032em; line-height:1.03; margin-top:18px;}
+.plate{position:relative; padding:var(--plate-top) var(--pad) clamp(26px,4vw,40px); border-top:3px solid var(--flame);}
+.plate h1{font-size:clamp(30px,6.6vw,58px); font-weight:800; letter-spacing:-.032em; line-height:1.03; margin-top:28px;}
 .plate .sub{margin-top:16px; font-size:clamp(15px,2vw,18px); color:var(--ink-2); max-width:56ch;}
-.stamp{display:flex; flex-wrap:wrap; gap:8px 20px; align-items:baseline;}
-.stamp b{font-family:var(--mono); font-size:12px; letter-spacing:.2em; text-transform:uppercase; font-weight:600;}
-.meta{
-  margin-top:30px; padding-top:18px; border-top:1px solid var(--line);
-  display:grid; grid-template-columns:repeat(auto-fit,minmax(148px,1fr)); gap:18px 24px;
-}
-.meta div span{display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.14em;
-  text-transform:uppercase; color:var(--muted); margin-bottom:5px;}
-.meta div strong{font-family:var(--mono); font-size:14px; font-weight:600; letter-spacing:-.01em;}
+/* Шапка делится на две части: слева бренд с отделом, справа дата.
+   Сам .stamp не переносится, поэтому дата всегда остаётся на верхней строке
+   у правого края. Переносится только левая группа: на узком экране
+   «ВИТАПРОМ» встаёт первой строкой, отдел уходит под него, а дата так и
+   стоит справа от «ВИТАПРОМ». Резервировать под неё место числом не нужно. */
+.stamp{display:flex; gap:8px 24px; align-items:baseline; justify-content:space-between;}
+/* Левая группа — обычный строчный текст, а не вложенный flex: вложенный
+   переносящийся flex Chrome ужимает по ширине, и «Группа компаний…» уезжала
+   на вторую строку даже там, где места хватало.
+   Класс .org, а НЕ .brand: .brand ниже занят карточками брендов, и его
+   display:flex перебивал шапку — на этом уже один раз обожглись. */
+.stamp .org{min-width:0; line-height:1.75;}
+.stamp b{font-family:var(--mono); font-size:12px; letter-spacing:.2em; text-transform:uppercase; font-weight:600; margin-right:18px;}
+.stamp .org .eyebrow{display:inline;}
+.stamp .date{flex:0 0 auto; white-space:nowrap; font-variant-numeric:tabular-nums; letter-spacing:.1em;}
 
 /* ── контакт в шапке ─────────────────────────────────────── */
 .contact{
-  margin-top:26px; padding-top:20px; border-top:1px solid var(--line);
-  display:flex; flex-wrap:wrap; gap:16px 26px; align-items:center;
+  margin-top:18px; padding-top:16px; border-top:1px solid var(--line);
+  display:flex; flex-wrap:wrap; gap:14px 18px; align-items:center;
 }
 .who .nm{font-size:clamp(17px,2.4vw,20px); font-weight:700; letter-spacing:-.02em; line-height:1.2;}
 .who .tel{
@@ -88,7 +95,7 @@ p{margin:0;}
   border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums;
 }
 .who .tel:hover{color:var(--flame); border-bottom-color:var(--flame);}
-.msgs{display:flex; gap:9px; margin-left:auto;}
+.msgs{display:flex; gap:9px;}
 .msg{
   width:44px; height:44px; display:grid; place-items:center; text-decoration:none;
   border-radius:3px; transition:transform .16s ease, filter .16s ease;
@@ -98,10 +105,6 @@ p{margin:0;}
 .msg-wa{background:#25D366;}
 .msg-tg{background:#26A5E4;}
 @media (prefers-reduced-motion:reduce){ .msg{transition:none;} }
-@media (max-width:520px){
-  .msgs{margin-left:0;}
-  .contact{gap:14px 18px;}
-}
 
 /* ── полоса цифр ─────────────────────────────────────────── */
 .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px;
@@ -211,23 +214,14 @@ a:focus-visible,.chip:focus-visible{outline:2px solid var(--flame); outline-offs
 
   <header class="plate">
     <div class="stamp">
-      <b style="color:var(--flame)">ВИТАПРОМ</b>
-      <span class="eyebrow">Группа компаний · коммерческий отдел</span>
-    </div>
-    <h1>Ключевые слова<br>для поиска запросов</h1>
-    <p class="sub">Чем ловить чужие заявки на то, чем мы торгуем: тендеры, доски, форумы, контекст. Список собран из нашей базы и отранжирован по спросу — сверху то, за чем приходят чаще всего.</p>
-    <div class="meta">
-      <div><span>Источник</span><strong>1С: номенклатура + продажи</strong></div>
-      <div><span>Период</span><strong>2024 — 2026</strong></div>
-      <div><span>Контур</span><strong>российские юрлица</strong></div>
-      <div><span>Собрано</span><strong>11.08.2026</strong></div>
+      <div class="org">
+        <b style="color:var(--flame)">ВИТАПРОМ</b>
+        <span class="eyebrow">Группа компаний · коммерческий отдел</span>
+      </div>
+      <span class="eyebrow date">11.08.2026</span>
     </div>
 
     <div class="contact">
-      <div class="who">
-        <div class="nm">Илья Орлов</div>
-        <a class="tel" href="tel:+79162279920">+7 916 227-99-20</a>
-      </div>
       <div class="msgs">
         <a class="msg msg-wa" href="https://wa.me/79162279920" target="_blank" rel="noopener noreferrer" title="Написать в WhatsApp" aria-label="Написать в WhatsApp">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
@@ -236,7 +230,14 @@ a:focus-visible,.chip:focus-visible{outline:2px solid var(--flame); outline-offs
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
         </a>
       </div>
+      <div class="who">
+        <div class="nm">Илья Орлов</div>
+        <a class="tel" href="tel:+79162279920">+7 916 227-99-20</a>
+      </div>
     </div>
+
+    <h1>Ключевые слова<br>для поиска запросов</h1>
+    <p class="sub">Чем ловить чужие заявки на то, чем мы торгуем: тендеры, доски, форумы, контекст. Список собран из нашей базы и отранжирован по спросу — сверху то, за чем приходят чаще всего.</p>
   </header>
 
 
